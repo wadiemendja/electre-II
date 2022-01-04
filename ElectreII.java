@@ -78,6 +78,20 @@ class ElectreII {
         return couples;
     }
 
+    static ArrayList<String> coupleDisc(double matriceConc[][]) {
+        ArrayList<String> couples = new ArrayList<>();
+        for (int i = 0; i < matriceConc.length; i++) {
+            for (int j = 0; j < matriceConc[i].length; j++) {
+                if (i != j) {
+                    if (matriceConc[i][j] == 0) {
+                        couples.add("P" + (i + 1) + "; P" + (j + 1));
+                    }
+                }
+            }
+        }
+        return couples;
+    }
+
     static double max(ArrayList<Double> values) {
         double max = values.get(0);
         for (int i = 0; i < values.size(); i++) {
@@ -126,8 +140,9 @@ class ElectreII {
         afficher(tableDePerfermance, "Table de perfermance :");
         double[][] matriceDeConc = concordance(tableDePerfermance, poids);
         afficher(matriceDeConc, "Matrice de concordance :");
-        System.out.println(coupleConc(matriceDeConc));
-        double[][] matriceDisc = discordance(tableDePerfermance);
-        afficher(matriceDisc, "Matrice de discordance : ");
+        double[][] matriceDeDisc = discordance(tableDePerfermance);
+        afficher(matriceDeDisc, "Matrice de discordance : ");
+        System.out.println("Couple de Conc" + coupleConc(matriceDeConc));
+        System.out.println("Couple de Disc" + coupleDisc(matriceDeDisc));
     }
 }
