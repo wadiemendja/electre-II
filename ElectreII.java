@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 class ElectreII {
@@ -20,11 +21,47 @@ class ElectreII {
         return listToMatrix(list, dim);
     }
 
+    static double[][] discordance(double[][] tableDePerfermance) {
+        double delta = calcDelta(tableDePerfermance);
+        ArrayList<Double> list = new ArrayList<>();
+        ArrayList<Double> list0 = new ArrayList<>();
+        for (int count = 0; count < tableDePerfermance.length; count++) {
+            for (int i = 0; i < tableDePerfermance.length; i++) {
+                for (int j = 0; j < tableDePerfermance[i].length; j++) {
+                    if (tableDePerfermance[count][j] <= tableDePerfermance[i][j]) {
+                        list0.add(tableDePerfermance[i][j] - tableDePerfermance[count][j]);
+                    } else
+                        list0.add(0.0);
+                }
+                list.add(Double.parseDouble(new DecimalFormat("##.####").format((1 / delta) * max(list0))));
+                list0 = new ArrayList<>();
+            }
+        }
+        int dim = tableDePerfermance.length;
+        return listToMatrix(list, dim);
+    }
+
     static double calcSommeDesPoids(double[] poids) {
         double somme = 0;
         for (int i = 0; i < poids.length; i++)
             somme += poids[i];
         return somme;
+    }
+
+    static double calcDelta(double[][] tableDePerfermance) {
+        double min = tableDePerfermance[0][0];
+        double max = tableDePerfermance[0][0];
+        for (int i = 0; i < tableDePerfermance.length; i++) {
+            for (int j = 0; j < tableDePerfermance[i].length; j++) {
+                if (tableDePerfermance[i][j] > max) {
+                    max = tableDePerfermance[i][j];
+                }
+                if (tableDePerfermance[i][j] < min) {
+                    min = tableDePerfermance[i][j];
+                }
+            }
+        }
+        return max - min;
     }
 
     static ArrayList<String> coupleConc(double matriceConc[][]) {
@@ -39,6 +76,16 @@ class ElectreII {
             }
         }
         return couples;
+    }
+
+    static double max(ArrayList<Double> values) {
+        double max = values.get(0);
+        for (int i = 0; i < values.size(); i++) {
+            if (values.get(i) > max) {
+                max = values.get(i);
+            }
+        }
+        return max;
     }
 
     static double[][] listToMatrix(ArrayList<Double> list, int dim) {
@@ -76,9 +123,11 @@ class ElectreII {
                 { 20, 10, 20, 13, 13 }
         };
         double[] poids = { 3, 2, 3, 1, 1 };
-        afficher(tableDePerfermance , "Table de perfermance :");
+        afficher(tableDePerfermance, "Table de perfermance :");
         double[][] matriceDeConc = concordance(tableDePerfermance, poids);
         afficher(matriceDeConc, "Matrice de concordance :");
         System.out.println(coupleConc(matriceDeConc));
+        double[][] matriceDisc = discordance(tableDePerfermance);
+        afficher(matriceDisc, "Matrice de discordance : ");
     }
 }
