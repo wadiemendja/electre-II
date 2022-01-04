@@ -1,19 +1,24 @@
+import java.util.ArrayList;
+
 class ElectreII {
-    static double[][] concordance(double[][] tableDePerfermance, double[] poids) { 
-        double matriceConcordance[][] = tableDePerfermance;
-        afficher(matriceConcordance);
+    static double[][] concordance(double[][] tableDePerfermance, double[] poids) {
+        double sommeDesPoids = calcSommeDesPoids(poids);
         double sommeCondistionalDesPoids = 0;
-        int jj = 0;
-        for (int i = 0; i < matriceConcordance.length - 1; i++) {
-            for (int j = 0; j < matriceConcordance[i].length; j++) {
-                if (tableDePerfermance[i][j] > tableDePerfermance[i + 1][j]) {
-                    sommeCondistionalDesPoids += poids[j];
+        ArrayList<Double> list = new ArrayList<>();
+        for (int count = 0; count < tableDePerfermance.length; count++) {
+            for (int i = 0; i < tableDePerfermance.length; i++) {
+                for (int j = 0; j < tableDePerfermance[i].length; j++) {
+                    if (tableDePerfermance[count][j] >= tableDePerfermance[i][j]) {
+                        sommeCondistionalDesPoids += poids[j];
+                    }
                 }
+                list.add(sommeCondistionalDesPoids / sommeDesPoids);
+                sommeCondistionalDesPoids = 0;
             }
-            matriceConcordance[i][jj] = sommeCondistionalDesPoids / calcSommeDesPoids(poids);
-            jj++;
         }
-        return matriceConcordance;
+        System.out.println(list);
+        int dim = tableDePerfermance.length;
+        return listToMatrix(list, dim);
     }
 
     static double calcSommeDesPoids(double[] poids) {
@@ -23,15 +28,30 @@ class ElectreII {
         return somme;
     }
 
-    static void afficher (double [][] matrice) {
-        for (int i= 0 ; i< matrice.length; i++ ){
-            for (int j = 0 ; j< matrice[i].length; j++) {
-                System.out.print(matrice[i][j] + "    ");
+    static double[][] listToMatrix(ArrayList<Double> list, int dim) {
+        double[][] result = new double[dim][dim];
+        int i = 0, j = 0;
+        for (int counter = 0; counter < list.size(); counter++) {
+            result[i][j] = list.get(counter);
+            j++;
+            if (j == dim) {
+                i++;
+                j = 0;
+            }
+        }
+        return result;
+    }
+
+    static void afficher(double[][] matrice) {
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[i].length; j++) {
+                System.out.print(matrice[i][j] + "  ");
             }
             System.out.println();
         }
         System.out.println("-----------------------------");
     }
+
     public static void main(String[] args) {
         double[][] tableDePerfermance = {
                 { 10, 20, 5, 10, 16 },
@@ -42,6 +62,7 @@ class ElectreII {
                 { 20, 10, 20, 13, 13 }
         };
         double[] poids = { 3, 2, 3, 1, 1 };
+        afficher(tableDePerfermance);
         afficher(concordance(tableDePerfermance, poids));
     }
 }
