@@ -16,7 +16,6 @@ class ElectreII {
                 sommeCondistionalDesPoids = 0;
             }
         }
-        System.out.println(list);
         int dim = tableDePerfermance.length;
         return listToMatrix(list, dim);
     }
@@ -26,6 +25,20 @@ class ElectreII {
         for (int i = 0; i < poids.length; i++)
             somme += poids[i];
         return somme;
+    }
+
+    static ArrayList<String> coupleConc(double matriceConc[][]) {
+        ArrayList<String> couples = new ArrayList<>();
+        for (int i = 0; i < matriceConc.length; i++) {
+            for (int j = 0; j < matriceConc[i].length; j++) {
+                if (i != j) {
+                    if (matriceConc[i][j] == 1) {
+                        couples.add("P" + (i + 1) + "; P" + (j + 1));
+                    }
+                }
+            }
+        }
+        return couples;
     }
 
     static double[][] listToMatrix(ArrayList<Double> list, int dim) {
@@ -42,7 +55,8 @@ class ElectreII {
         return result;
     }
 
-    static void afficher(double[][] matrice) {
+    static void afficher(double[][] matrice, String title) {
+        System.out.println(title);
         for (int i = 0; i < matrice.length; i++) {
             for (int j = 0; j < matrice[i].length; j++) {
                 System.out.print(matrice[i][j] + "  ");
@@ -62,7 +76,9 @@ class ElectreII {
                 { 20, 10, 20, 13, 13 }
         };
         double[] poids = { 3, 2, 3, 1, 1 };
-        afficher(tableDePerfermance);
-        afficher(concordance(tableDePerfermance, poids));
+        afficher(tableDePerfermance , "Table de perfermance :");
+        double[][] matriceDeConc = concordance(tableDePerfermance, poids);
+        afficher(matriceDeConc, "Matrice de concordance :");
+        System.out.println(coupleConc(matriceDeConc));
     }
 }
