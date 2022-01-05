@@ -64,13 +64,13 @@ class ElectreII {
         return max - min;
     }
 
-    static ArrayList<String> coupleConc(double matriceConc[][]) {
+    static ArrayList<String> coupleConc(double matriceConc[][], double seuil) {
         ArrayList<String> couples = new ArrayList<>();
         for (int i = 0; i < matriceConc.length; i++) {
             for (int j = 0; j < matriceConc[i].length; j++) {
                 if (i != j) {
-                    if (matriceConc[i][j] == 1) {
-                        couples.add("P" + (i + 1) + "; P" + (j + 1));
+                    if (matriceConc[i][j] >= seuil) {
+                        couples.add("P" + (i + 1) + "=>P" + (j + 1));
                     }
                 }
             }
@@ -78,13 +78,13 @@ class ElectreII {
         return couples;
     }
 
-    static ArrayList<String> coupleDisc(double matriceConc[][]) {
+    static ArrayList<String> coupleDisc(double matriceConc[][], double seuil) {
         ArrayList<String> couples = new ArrayList<>();
         for (int i = 0; i < matriceConc.length; i++) {
             for (int j = 0; j < matriceConc[i].length; j++) {
                 if (i != j) {
-                    if (matriceConc[i][j] == 0) {
-                        couples.add("P" + (i + 1) + "; P" + (j + 1));
+                    if (matriceConc[i][j] <= seuil) {
+                        couples.add("P" + (i + 1) + "=>P" + (j + 1));
                     }
                 }
             }
@@ -137,12 +137,13 @@ class ElectreII {
                 { 20, 10, 20, 13, 13 }
         };
         double[] poids = { 3, 2, 3, 1, 1 };
+        double seuilConc = 1, seuilDisc = 0;
         afficher(tableDePerfermance, "Table de perfermance :");
         double[][] matriceDeConc = concordance(tableDePerfermance, poids);
         afficher(matriceDeConc, "Matrice de concordance :");
         double[][] matriceDeDisc = discordance(tableDePerfermance);
         afficher(matriceDeDisc, "Matrice de discordance : ");
-        System.out.println("Couple de Conc" + coupleConc(matriceDeConc));
-        System.out.println("Couple de Disc" + coupleDisc(matriceDeDisc));
+        System.out.println("Couple de Conc : " + coupleConc(matriceDeConc, seuilConc));
+        System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc, seuilDisc));
     }
 }
