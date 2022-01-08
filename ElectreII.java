@@ -1,8 +1,6 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 class ElectreII {
     static double[][] concordance(double[][] tableDePerfermance, double[] poids) {
