@@ -1,5 +1,8 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 class ElectreII {
     static double[][] concordance(double[][] tableDePerfermance, double[] poids) {
@@ -127,6 +130,37 @@ class ElectreII {
         System.out.println("-----------------------------");
     }
 
+    static double[][] matriceCredibilite(double[][] matriceConc, double[][] matriceDisc, double seuilConc,
+            double seuilDisc) {
+        double credibMatrix[][] = new double[matriceConc.length][matriceConc[0].length];
+        for (int i = 0; i < matriceConc.length; i++) {
+            for (int j = 0; j < matriceConc[i].length; j++) {
+                if ((matriceConc[i][j] >= seuilConc) && (matriceDisc[i][j] <= seuilDisc)) {
+                    credibMatrix[i][j] = 1;
+                } else
+                    credibMatrix[i][j] = 0;
+            }
+        }
+        return credibMatrix;
+    }
+
+    static ArrayList<String> rank(double[][] matriceCrid) {
+        ArrayList<String> rankedList = new ArrayList<>();
+        int counter = 0;
+        for (int i = 0; i < matriceCrid.length; i++) {
+            for (int j = 0; j < matriceCrid[i].length; j++) {
+                if (i != j) {
+                    if (matriceCrid[i][j] == 0)
+                        counter++;
+                }
+            }
+            rankedList.add(counter + " (P" + (i + 1) + ")");
+            counter = 0;
+        }
+        Collections.sort(rankedList);
+        return rankedList;
+    }
+
     public static void main(String[] args) {
         double[][] tableDePerfermance = {
                 { 10, 20, 5, 10, 16 },
@@ -145,5 +179,9 @@ class ElectreII {
         afficher(matriceDeDisc, "Matrice de discordance : ");
         System.out.println("Couple de Conc : " + coupleConc(matriceDeConc, seuilConc));
         System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc, seuilDisc));
+        double[][] matriceCred = matriceCredibilite(matriceDeConc, matriceDeDisc, seuilConc, seuilDisc);
+        afficher(matriceCred, "Matrice de credibilite : ");
+        ArrayList<String> ranking = rank(matriceCred);
+        System.out.println("Ranking : " + ranking);
     }
 }
