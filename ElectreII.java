@@ -1,6 +1,16 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 class ElectreII {
     static double[][] concordance(double[][] tableDePerfermance, double[] poids) {
@@ -159,6 +169,16 @@ class ElectreII {
         return rankedList;
     }
 
+    static String[][] doubleToStringMatrix(double[][] matrix) {
+        String[][] stringMatrix = new String[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; i < matrix[i].length; i++) {
+                stringMatrix[i][j] = matrix[i][j] + "";
+            }
+        }
+        return stringMatrix;
+    }
+
     public static void main(String[] args) {
         double[][] tableDePerfermance = {
                 { 10, 20, 5, 10, 16 },
@@ -175,11 +195,50 @@ class ElectreII {
         afficher(matriceDeConc, "Matrice de concordance :");
         double[][] matriceDeDisc = discordance(tableDePerfermance);
         afficher(matriceDeDisc, "Matrice de discordance : ");
-        System.out.println("Couple de Conc : " + coupleConc(matriceDeConc, seuilConc));
-        System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc, seuilDisc));
+        // System.out.println("Couple de Conc : " + coupleConc(matriceDeConc,
+        // seuilConc));
+        // System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc,
+        // seuilDisc));
         double[][] matriceCred = matriceCredibilite(matriceDeConc, matriceDeDisc, seuilConc, seuilDisc);
         afficher(matriceCred, "Matrice de credibilite : ");
         ArrayList<String> ranking = rank(matriceCred);
         System.out.println("Ranking : " + ranking);
+        // User Interface
+        JFrame window = new JFrame("Electre II");
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setBounds(300, 100, 800, 500);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        JButton createTableBtn = new JButton("Create table");
+        createTableBtn.setBounds(110, 10, 110, 20);
+        JButton executeBtn = new JButton("Execute =>");
+        executeBtn.setBounds(10, 280, 110, 20);
+        JTextField rowstext = new JTextField("6");
+        JTextField coltext = new JTextField("5");
+        rowstext.setBounds(10, 10, 50, 20);
+        coltext.setBounds(60, 10, 50, 20);
+        window.setContentPane(panel);
+        panel.add(rowstext);
+        panel.add(coltext);
+        panel.add(createTableBtn);
+        panel.add(executeBtn);
+        executeBtn.setVisible(false);
+        DefaultTableModel model = new DefaultTableModel(6, 5);
+        JTable table = new JTable(model);
+        table.setBounds(10, 50, 400, 200);
+        panel.add(table);
+        window.setVisible(true);
+        createTableBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int rows = Integer.parseInt(rowstext.getText());
+                int col = Integer.parseInt(coltext.getText());
+                DefaultTableModel model = new DefaultTableModel(rows, col);
+                JTable table = new JTable(model);
+                table.setBounds(10, 50, 400, 200);
+                panel.add(table);
+                executeBtn.setVisible(true);
+                window.setVisible(true);
+            }
+        });
     }
 }
