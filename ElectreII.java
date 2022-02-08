@@ -1,16 +1,6 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
 
 class ElectreII {
     static double[][] concordance(double[][] tableDePerfermance, double[] poids) {
@@ -158,7 +148,7 @@ class ElectreII {
         for (int i = 0; i < matriceCrid.length; i++) {
             for (int j = 0; j < matriceCrid[i].length; j++) {
                 if (i != j) {
-                    if (matriceCrid[i][j] == 0)
+                    if (matriceCrid[i][j] == 1)
                         counter++;
                 }
             }
@@ -181,15 +171,14 @@ class ElectreII {
 
     public static void main(String[] args) {
         double[][] tableDePerfermance = {
-                { 10, 20, 5, 10, 16 },
-                { 0, 5, 5, 16, 10 },
-                { 0, 10, 0, 16, 7 },
-                { 20, 5, 10, 10, 13 },
-                { 20, 10, 15, 13, 13 },
-                { 20, 10, 20, 13, 13 }
+                { 1, 2, 1, 5, 2, 2, 4 },
+                { 3, 5, 3, 5, 3, 3, 3 },
+                { 3, 5, 3, 5, 3, 2, 2 },
+                { 1, 2, 2, 5, 1, 1, 1 },
+                { 1, 1, 3, 5, 4, 1, 5 }
         };
-        double[] poids = { 3, 2, 3, 1, 1 };
-        double seuilConc = 1, seuilDisc = 0;
+        double[] poids = { 0.078, 0.118, 0.157, 0.314, 0.235, 0.039, 0.059 };
+        double seuilConc = 0.75, seuilDisc = 0.25;
         afficher(tableDePerfermance, "Table de perfermance :");
         double[][] matriceDeConc = concordance(tableDePerfermance, poids);
         afficher(matriceDeConc, "Matrice de concordance :");
@@ -203,42 +192,20 @@ class ElectreII {
         afficher(matriceCred, "Matrice de credibilite : ");
         ArrayList<String> ranking = rank(matriceCred);
         System.out.println("Ranking : " + ranking);
-        // User Interface
-        JFrame window = new JFrame("Electre II");
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setBounds(300, 100, 800, 500);
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        JButton createTableBtn = new JButton("Create table");
-        createTableBtn.setBounds(110, 10, 110, 20);
-        JButton executeBtn = new JButton("Execute =>");
-        executeBtn.setBounds(10, 280, 110, 20);
-        JTextField rowstext = new JTextField("6");
-        JTextField coltext = new JTextField("5");
-        rowstext.setBounds(10, 10, 50, 20);
-        coltext.setBounds(60, 10, 50, 20);
-        window.setContentPane(panel);
-        panel.add(rowstext);
-        panel.add(coltext);
-        panel.add(createTableBtn);
-        panel.add(executeBtn);
-        executeBtn.setVisible(false);
-        DefaultTableModel model = new DefaultTableModel(6, 5);
-        JTable table = new JTable(model);
-        table.setBounds(10, 50, 400, 200);
-        panel.add(table);
-        window.setVisible(true);
-        createTableBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int rows = Integer.parseInt(rowstext.getText());
-                int col = Integer.parseInt(coltext.getText());
-                DefaultTableModel model = new DefaultTableModel(rows, col);
-                JTable table = new JTable(model);
-                table.setBounds(10, 50, 400, 200);
-                panel.add(table);
-                executeBtn.setVisible(true);
-                window.setVisible(true);
-            }
-        });
     }
 }
+
+
+
+
+
+
+
+        // double[][] tableDePerfermance = {
+        //         { 10, 20, 5, 10, 16 },
+        //         { 0, 5, 5, 16, 10 },
+        //         { 0, 10, 0, 16, 7 },
+        //         { 20, 5, 10, 10, 13 },
+        //         { 20, 10, 15, 13, 13 },
+        //         { 20, 10, 20, 13, 13 }
+        // };
