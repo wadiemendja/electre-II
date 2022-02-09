@@ -148,7 +148,7 @@ class ElectreII {
         for (int i = 0; i < matriceCrid.length; i++) {
             for (int j = 0; j < matriceCrid[i].length; j++) {
                 if (i != j) {
-                    if (matriceCrid[i][j] == 1)
+                    if (matriceCrid[i][j] == 0)
                         counter++;
                 }
             }
