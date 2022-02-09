@@ -184,10 +184,6 @@ class ElectreII {
         afficher(matriceDeConc, "Matrice de concordance :");
         double[][] matriceDeDisc = discordance(tableDePerfermance);
         afficher(matriceDeDisc, "Matrice de discordance : ");
-        // System.out.println("Couple de Conc : " + coupleConc(matriceDeConc,
-        // seuilConc));
-        // System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc,
-        // seuilDisc));
         double[][] matriceCred = matriceCredibilite(matriceDeConc, matriceDeDisc, seuilConc, seuilDisc);
         afficher(matriceCred, "Matrice de credibilite : ");
         ArrayList<String> ranking = rank(matriceCred);
@@ -197,6 +193,10 @@ class ElectreII {
 
 
 
+// System.out.println("Couple de Conc : " + coupleConc(matriceDeConc,
+// seuilConc));
+// System.out.println("Couple de Disc : " + coupleDisc(matriceDeDisc,
+// seuilDisc));
 
 
 
